@@ -5,9 +5,15 @@ Adam Shechter
 
 Python script to generate all resources needed to start CloudTrail logging on AWS
 
+Steps:
+1. Creating S3 Bucket
+2. Attaching S3 Bucket Policy
+3. Creating new CloudWatch Log Grou
+4. Creating new IAM Role for Cloudtrail
+5. Creating CloudTrail Trail
+6. Running SQL commands in Athena to set up Database and Table
 
-
-# Copyright <2019> <At1 LLC>
+# Copyright 2019 At1 LLC
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the Software),
 # to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -300,17 +306,17 @@ if __name__ == '__main__':
     cloudwatch_log_group_name = "cloudtrail-log-" + region_name + app_name
     cloudtrail_role_name = "cloudtrail-put-get-role" + app_name
     db_name = "cloudtrail_db" + app_name
-    logger.info("Creating S3 Bucket")
+    logger.info("1. Creating S3 Bucket")
     s3_create_bucket()
-    logger.info("Attaching S3 Bucket Policy")
+    logger.info("2. Attaching S3 Bucket Policy")
     s3_bucket_policy()
-    logger.info("Creating new CloudWatch Log Group")
+    logger.info("3. Creating new CloudWatch Log Group")
     cloudwatch_log_group_arn = logs_create_log_group()
-    logger.info("Creating new IAM Role for Cloudtrail")
+    logger.info("4. Creating new IAM Role for Cloudtrail")
     cloudtrail_role_arn = create_role_cloudtrail()
     time.sleep(20)
-    logger.info("Creating CloudTrail Trail")
+    logger.info("5. Creating CloudTrail Trail")
     create_trail()
-    logger.info("Running SQL commands in Athena to set up Database and Table")
+    logger.info("6. Running SQL commands in Athena to set up Database and Table")
     athena_set_up()
     logger.info("All done!\nCloudtrail resources created.")
