@@ -46,12 +46,17 @@ def initialize_logger(output_dir):
 # Create S3 bucket for CloudTrail logging.
 def s3_create_bucket():
     try:
-        response = s3_client.create_bucket(
-            Bucket=s3bucket_name,
-            CreateBucketConfiguration={
-                'LocationConstraint': region_name
-            },
-        )
+        if region_name != 'us-east-1':
+            response = s3_client.create_bucket(
+                Bucket=s3bucket_name,
+                CreateBucketConfiguration={
+                    'LocationConstraint': region_name
+                },
+            )
+        else:
+            response = s3_client.create_bucket(
+                Bucket=s3bucket_name,
+            )
         logger.info(response)
     except Exception as e:
         print(e)
